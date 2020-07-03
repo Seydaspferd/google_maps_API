@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Google Maps API</title>
+    <style>
+      #map {
+        height: 400px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>My Google Map</h1>
+
+    <div id="map"></div>
+
+    <script>
+      function initMap() {
+        // map options
+        var options = {
+          zoom: 10,
+          center: { lat: 47.3769, lng: 8.5417 },
+        };
+
+        // new map
+        var map = new google.maps.Map(document.getElementById('map'), options);
+
+        // listen for click on map and create marker
+        google.maps.event.addListener(map, 'click', function (event) {
+          addMarker({ coords: event.latLng });
+        });
+
+        /*
+        // add marker
+        var marker = new google.maps.Marker({
+          position: { lat: 47.3882, lng: 8.4831 },
+          map: map,
+          icon: 'http://maps.google.com/mapfiles/kml/pushpin/grn-pushpin.png',
+        });
+
+        // add info window
+        var infoWindow = new google.maps.InfoWindow({
+          content: '<h1>Altstetten ZH</h1>',
+        });
+
+        marker.addListener('click', function () {
+          infoWindow.open(map, marker);
+        });
+        */
+
+        // array of markers
+        var markers = [
+          {
+            coords: { lat: 47.3882, lng: 8.4831 },
+            iconImage:
+              'http://maps.google.com/mapfiles/kml/pushpin/grn-pushpin.png',
+            content: '<h1>Altstetten ZH</h1>',
+          },
+          { coords: { lat: 47.2694, lng: 8.6488 } },
+          { coords: { lat: 47.3651, lng: 8.5026 } },
+        ];
+
+        // loop through markers
+        for (var i = 0; i < markers.length; i++) {
+          addMarker(markers[i]);
+        }
+
+        /*
+        // how to manually add markers
+        addMarker({
+          coords: { lat: 47.3882, lng: 8.4831 },
+          iconImage:
+            'http://maps.google.com/mapfiles/kml/pushpin/grn-pushpin.png',
+          content: '<h1>Altstetten ZH</h1>',
+        });
+        addMarker({ coords: { lat: 47.2694, lng: 8.6488 } });
+        addMarker({ coords: { lat: 47.3651, lng: 8.5026 } });
+        */
+
+        // add marker function
+        function addMarker(props) {
+          var marker = new google.maps.Marker({
+            position: props.coords,
+            map: map,
+            //icon: props.iconImage,
+          });
+
+          // check for custom icon
+          if (props.iconImage) {
+            //set icon
+            marker.setIcon(props.iconImage);
+          }
+
+          // check for content
+          if (props.content) {
+            // add info window
+            var infoWindow = new google.maps.InfoWindow({
+              content: props.content,
+            });
+
+            marker.addListener('click', function () {
+              infoWindow.open(map, marker);
+            });
+          }
+        }
+      }
+    </script>
+
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDuO5WEhmjcxD0bhw-_NzWyVPwSMEAnXjg&callback=initMap"
+    ></script>
+  </body>
+</html>
